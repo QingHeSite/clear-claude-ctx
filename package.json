@@ -1,0 +1,18 @@
+{
+  "name": "clear-cc",
+  "version": "1.0.1",
+  "description": "CLI tool to clear ~/.claude/project folder",
+  "main": "index.js",
+  "bin": {
+    "clear-cc": "./bin/clear-cc.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["cli", "claude", "clear"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
