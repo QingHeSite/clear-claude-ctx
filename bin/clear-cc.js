@@ -18,15 +18,39 @@ function showVersion() {
 function clearClaudeProject() {
   try {
     const homeDir = os.homedir();
+    const claudeJsonPath = path.join(homeDir, '.claude.json');
+    const claudeJsonBackupPath = path.join(homeDir, '.claude.json.backup');
     const claudeProjectPath = path.join(homeDir, '.claude', 'projects');
     const claudeStatsigPath = path.join(homeDir, '.claude', 'statsig');
     const claudeTodosPath = path.join(homeDir, '.claude', 'todos');
+    const claudeIdePath = path.join(homeDir, '.claude', 'ide');
+    const claudeShellSnapshotsPath = path.join(homeDir, '.claude', 'shell-snapshots');
     
+    console.log(`Checking path: ${claudeJsonPath}`);
+    console.log(`Checking path: ${claudeJsonBackupPath}`);
     console.log(`Checking path: ${claudeProjectPath}`);
     console.log(`Checking path: ${claudeStatsigPath}`);
     console.log(`Checking path: ${claudeTodosPath}`);
+    console.log(`Checking path: ${claudeIdePath}`);
+    console.log(`Checking path: ${claudeShellSnapshotsPath}`);
     
     let clearedCount = 0;
+    
+    if (fs.existsSync(claudeJsonPath)) {
+      fs.rmSync(claudeJsonPath, { force: true });
+      console.log('✅ Successfully cleared ~/.claude.json file');
+      clearedCount++;
+    } else {
+      console.log('ℹ️  ~/.claude.json file does not exist');
+    }
+    
+    if (fs.existsSync(claudeJsonBackupPath)) {
+      fs.rmSync(claudeJsonBackupPath, { force: true });
+      console.log('✅ Successfully cleared ~/.claude.json.backup file');
+      clearedCount++;
+    } else {
+      console.log('ℹ️  ~/.claude.json.backup file does not exist');
+    }
     
     if (fs.existsSync(claudeProjectPath)) {
       fs.rmSync(claudeProjectPath, { recursive: true, force: true });
@@ -52,11 +76,27 @@ function clearClaudeProject() {
       console.log('ℹ️  ~/.claude/todos folder does not exist');
     }
     
+    if (fs.existsSync(claudeIdePath)) {
+      fs.rmSync(claudeIdePath, { recursive: true, force: true });
+      console.log('✅ Successfully cleared ~/.claude/ide folder');
+      clearedCount++;
+    } else {
+      console.log('ℹ️  ~/.claude/ide folder does not exist');
+    }
+    
+    if (fs.existsSync(claudeShellSnapshotsPath)) {
+      fs.rmSync(claudeShellSnapshotsPath, { recursive: true, force: true });
+      console.log('✅ Successfully cleared ~/.claude/shell-snapshots folder');
+      clearedCount++;
+    } else {
+      console.log('ℹ️  ~/.claude/shell-snapshots folder does not exist');
+    }
+    
     if (clearedCount === 0) {
-      console.log('ℹ️  No Claude folders found to clear');
+      console.log('ℹ️  No Claude files or folders found to clear');
     }
   } catch (error) {
-    console.error('❌ Error clearing Claude folders:', error.message);
+    console.error('❌ Error clearing Claude files and folders:', error.message);
     process.exit(1);
   }
 }
@@ -73,7 +113,7 @@ if (args.includes('--version') || args.includes('-v')) {
   console.log('  --help, -h       Show help');
   console.log('');
   console.log('Description:');
-  console.log('  Clear ~/.claude/projects, ~/.claude/statsig, and ~/.claude/todos folders');
+  console.log('  Clear ~/.claude.json, ~/.claude.json.backup, ~/.claude/projects, ~/.claude/statsig, ~/.claude/todos, ~/.claude/ide, and ~/.claude/shell-snapshots files/folders');
 } else {
   clearClaudeProject();
 }
